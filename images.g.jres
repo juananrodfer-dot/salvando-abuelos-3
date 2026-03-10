@@ -1,0 +1,12 @@
+{
+    "image1": {
+        "data": "hwQQABAAAAAAAADd3Q0AAAAAAA3dAAAAAAAgIgAAAPDu3S0iIoKG/v7dLyIiYmj/3v0tIiICAADe/S0iIgIAAP7dLyIigob/7t0tIiJiaP4AACAiAAAA8AAAAA3dAAAAAAAA3d0NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "niño malo"
+    },
+    "*": {
+        "mimeType": "image/x-mkcd-f4",
+        "dataEncoding": "base64",
+        "namespace": "myImages"
+    }
+}

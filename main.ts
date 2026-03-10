@@ -1,18 +1,37 @@
 namespace SpriteKind {
     export const lava = SpriteKind.create()
 }
+function CargaNivel (n: number) {
+    if (("n" as any) == ("1" as any)) {
+        tiles.setCurrentTilemap(tilemap`nivel1`)
+    } else {
+        tiles.setCurrentTilemap(tilemap`nivel2`)
+        tiles.placeOnRandomTile(jugador, sprites.dungeon.doorClosedNorth)
+        scene.cameraFollowSprite(jugador)
+    }
+}
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     sprites.destroy(projectile)
 })
-scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.chestClosed, function (sprite, location) {
+scene.onOverlapTile(SpriteKind.Player, assets.tile`EXIT`, function (sprite, location) {
+    if (("nivel" as any) == ("1" as any)) {
+        nivel = 2
+        CargaNivel(2)
+    } else {
+        game.gameOver(true)
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`miMosaico`, function (sprite, location) {
     puededisparar = 0
 })
+let nivel = 0
 let projectile: Sprite = null
+let jugador: Sprite = null
 let puededisparar = 0
 puededisparar = 1
 tiles.setCurrentTilemap(tilemap`nivel1`)
-let jugador = sprites.create(img`
+jugador = sprites.create(img`
     . . . . . . f f f f . . . . . . 
     . . . . f f f 2 2 f f f . . . . 
     . . . f f f 2 2 2 2 f f f . . . 
@@ -32,25 +51,8 @@ let jugador = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(jugador)
 scene.cameraFollowSprite(jugador)
-let serpiente = sprites.create(img`
-    . . . . . . . . . . . c c c c c 
-    . . . . . . . . . c c 7 7 7 6 c 
-    . . . . . . . . c c 7 7 7 c c . 
-    . . . . . . . . c 6 7 7 c . . . 
-    . . . . . . . . c 6 6 6 c . . . 
-    . . . . . . . . c 6 6 6 c c . . 
-    . . . c c c c c c c 6 6 6 c c . 
-    . . c 6 7 7 7 7 6 c c 6 6 6 c . 
-    . c 7 7 7 7 7 7 7 7 c 6 6 6 c c 
-    c 6 7 7 7 7 7 7 7 7 6 c 6 6 6 c 
-    c 7 c 6 6 6 6 c 7 7 7 c 6 6 6 c 
-    f 7 c c 6 6 c c 7 7 7 f 6 6 6 c 
-    f 7 6 f 6 6 f 6 7 7 7 f 6 6 6 c 
-    . f 7 7 7 7 7 7 7 7 6 f 6 6 c . 
-    . c 1 c f f 1 c 7 6 f 6 6 c c . 
-    . c c c c c c c c c c c c . . . 
-    `, SpriteKind.Enemy)
-info.setLife(100)
+let niño_malo = sprites.create(assets.image`niño malo`, SpriteKind.Enemy)
+info.setLife(13)
 game.onUpdateInterval(1, function () {
     if (puededisparar) {
         projectile = sprites.createProjectileFromSprite(img`
@@ -70,9 +72,9 @@ game.onUpdateInterval(1, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            `, serpiente, 100, 0)
+            `, niño_malo, 100, 0)
     }
 })
 forever(function () {
-    serpiente.setPosition(7, 100)
+    niño_malo.setPosition(7, 100)
 })
