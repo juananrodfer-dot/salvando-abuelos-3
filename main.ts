@@ -3,9 +3,9 @@ namespace SpriteKind {
 }
 function CargaNivel (n: number) {
     if (("n" as any) == ("1" as any)) {
-        tiles.setCurrentTilemap(tilemap`nivel1`)
-    } else {
         tiles.setCurrentTilemap(tilemap`nivel2`)
+    } else {
+        tiles.setCurrentTilemap(tilemap`nivel0`)
         tiles.placeOnRandomTile(jugador, sprites.dungeon.doorClosedNorth)
         scene.cameraFollowSprite(jugador)
     }
@@ -25,10 +25,11 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`EXIT`, function (sprite, loca
 scene.onOverlapTile(SpriteKind.Player, assets.tile`miMosaico`, function (sprite, location) {
     puededisparar = 0
 })
-let nivel = 0
 let projectile: Sprite = null
 let jugador: Sprite = null
 let puededisparar = 0
+let nivel = 0
+nivel = 1
 puededisparar = 1
 tiles.setCurrentTilemap(tilemap`nivel1`)
 jugador = sprites.create(img`
