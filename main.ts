@@ -1,7 +1,12 @@
 namespace SpriteKind {
     export const lava = SpriteKind.create()
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+    sprites.destroy(projectile)
+})
 let projectile: Sprite = null
+let puededisparar = 1
 tiles.setCurrentTilemap(tilemap`nivel1`)
 let jugador = sprites.create(img`
     . . . . . . f f f f . . . . . . 
@@ -41,8 +46,32 @@ let serpiente = sprites.create(img`
     . c 1 c f f 1 c 7 6 f 6 6 c c . 
     . c c c c c c c c c c c c . . . 
     `, SpriteKind.Enemy)
-info.setLife(999999)
+info.setLife(10)
+game.onUpdateInterval(700, function () {
+    if (true) {
+        puededisparar = 1
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, projectile, 50, 50)
+    }
+})
 forever(function () {
+    serpiente.setPosition(7, 100)
     projectile = sprites.createProjectileFromSprite(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -60,5 +89,5 @@ forever(function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        `, serpiente, 50, 50)
+        `, serpiente, 100, 0)
 })
