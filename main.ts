@@ -3,9 +3,9 @@ namespace SpriteKind {
 }
 function CargaNivel (n: number) {
     if (("n" as any) == ("1" as any)) {
-        tiles.setCurrentTilemap(tilemap`nivel1`)
-    } else {
         tiles.setCurrentTilemap(tilemap`nivel2`)
+    } else {
+        tiles.setCurrentTilemap(tilemap`nivel0`)
         tiles.placeOnRandomTile(jugador, sprites.dungeon.doorClosedNorth)
         scene.cameraFollowSprite(jugador)
     }
@@ -15,20 +15,16 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player, function (sprite, ot
     sprites.destroy(projectile)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`EXIT`, function (sprite, location) {
-    if (("nivel" as any) == ("1" as any)) {
-        nivel = 2
-        CargaNivel(2)
-    } else {
-        game.gameOver(true)
-    }
+    CargaNivel(1)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`miMosaico`, function (sprite, location) {
     puededisparar = 0
 })
-let nivel = 0
 let projectile: Sprite = null
 let jugador: Sprite = null
 let puededisparar = 0
+let nivel = 0
+nivel = 1
 puededisparar = 1
 tiles.setCurrentTilemap(tilemap`nivel1`)
 jugador = sprites.create(img`
@@ -72,7 +68,7 @@ game.onUpdateInterval(1, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            `, niño_malo, 100, 0)
+            `, niño_malo, -100, 0)
     }
 })
 forever(function () {
