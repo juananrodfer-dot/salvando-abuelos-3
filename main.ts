@@ -2,29 +2,38 @@ namespace SpriteKind {
     export const lava = SpriteKind.create()
 }
 function CargaNivel (n: number) {
+    sprites.destroy(niño_malo)
     tiles.setCurrentTilemap(tilemap`nivel2`)
     tiles.placeOnRandomTile(jugador, sprites.dungeon.doorClosedNorth)
     scene.cameraFollowSprite(jugador)
-    niño_maléfico = sprites.create(img`
-        . . . . . . f f f f . . . . . . 
-        . . . . f f f a a f f f . . . . 
-        . . . f f f a a a a f f f . . . 
-        . . f f f c c c c c c f f f . . 
-        . . f f c a a a a a a c c f . . 
-        . . f c a f f f f f f a c f . . 
-        . . f f f f e e e e f f f f . . 
-        . f f e f b f 4 4 f b f e f f . 
-        . f e e 4 1 f d d f 1 4 e e f . 
-        . . f e e d d d d d d e e f . . 
-        . . . f e e 4 4 4 4 e e f . . . 
-        . . e 4 f c c c c c c f 4 e . . 
-        . . 4 d f c c c c c c f d 4 . . 
-        . . 4 4 f 4 4 a a 4 4 f 4 4 . . 
-        . . . . . f f f f f f . . . . . 
-        . . . . . f f . . f f . . . . . 
+    fantasma = sprites.create(img`
+        ........................
+        ........................
+        ........................
+        ........................
+        ..........ffff..........
+        ........ff9999ff........
+        .......f69999996f.......
+        .......f99999996f.......
+        ......fd99999999df......
+        ......fd99999999df......
+        ......fddd9999dddf......
+        ......f6dbfddfbd6f......
+        ......fcdcf99fcdcf......
+        .......f69999996f.......
+        ......fffcd696dffff.....
+        ....fc999c6f6fc999cf....
+        ....f96969ffff9b9b9f....
+        ....f6f6f6ffffbfbfbf....
+        .........ffffff.........
+        ...........fff..........
+        ........................
+        ........................
+        ........................
+        ........................
         `, SpriteKind.Enemy)
-    niño_maléfico.setPosition(66, 33)
-    niño_maléfico.follow(jugador, 20)
+    fantasma.setPosition(66, 33)
+    fantasma.follow(jugador, 20)
 }
 function Nivel0 (núm: number) {
     nivel = 1
@@ -71,9 +80,17 @@ function Nivel0 (núm: number) {
     niño_malo.setPosition(7, 100)
     info.setLife(15)
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`baston`, function (sprite, location) {
+    if (tienebaston == 0) {
+        tienebaston = 1
+        puededisparar = 0
+        game.showLongText("\"CONSEGUIDO BASTON\"", DialogLayout.Top)
+    }
+})
 function nivel3 (núm: number) {
+    sprites.destroy(fantasma)
     tiles.setCurrentTilemap(tilemap`nivel0`)
-    tiles.placeOnRandomTile(jugador, sprites.dungeon.stairLadder)
+    tiles.placeOnRandomTile(jugador, assets.tile`miMosaico2`)
     controller.moveSprite(jugador, 100, 0)
     jugador.ay = 400
 }
@@ -88,27 +105,31 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava1, function (sprite, location) {
     info.changeLifeBy(-1)
-    tiles.placeOnRandomTile(jugador, sprites.dungeon.stairLadder)
+    tiles.placeOnRandomTile(jugador, assets.tile`miMosaico2`)
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
+    tiles.placeOnRandomTile(jugador, sprites.dungeon.doorClosedNorth)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`EXIT`, function (sprite, location) {
     CargaNivel(1)
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`miMosaico`, function (sprite, location) {
-    puededisparar = 0
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenNorth, function (sprite, location) {
     nivel3(1)
 })
 let projectile: Sprite = null
-let niño_malo: Sprite = null
 let puededisparar = 0
 let nivel = 0
-let niño_maléfico: Sprite = null
+let fantasma: Sprite = null
 let jugador: Sprite = null
+let niño_malo: Sprite = null
+let tienebaston = 0
+game.showLongText("Hace mucho tiempo, la IA malvada robó los 4 objetos mágicos", DialogLayout.Bottom)
+game.showLongText("Solo un héroe llamado Jimmy puede recuperarlos", DialogLayout.Bottom)
+game.showLongText("Encuentra los 4 objetos y salva el conocimiento ancestral de nuestros abuelos", DialogLayout.Bottom)
 Nivel0(1)
+let objetos = 0
+tienebaston = 0
 game.onUpdateInterval(1, function () {
     if (puededisparar) {
         projectile = sprites.createProjectileFromSprite(img`
@@ -130,7 +151,4 @@ game.onUpdateInterval(1, function () {
             . . . . . . . . . . . . . . . . 
             `, niño_malo, 100, 0)
     }
-})
-forever(function () {
-	
 })
