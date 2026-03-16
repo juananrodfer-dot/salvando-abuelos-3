@@ -1,7 +1,7 @@
 {
     "name": "Salvando abuelos ;3",
     "version": "0.3.0",
-    "description": "",
+    "description": "Salvando abuelos de la malvada IA",
     "dependencies": {
         "device": "*"
     },
